@@ -33,10 +33,11 @@ function Dashboard({ user, onLogout }) {
     }
   };
 
+
   const buscarExpedientes = async (filtros) => {
     setLoading(true);
     try {
-      const tieneFiltros = filtros.numero || filtros.nombre || filtros.tipoCaso || filtros.estado;
+      const tieneFiltros = filtros.numero || filtros.nombre || filtros.tipoCaso;
       
       if (tieneFiltros) {
         const resultados = await expedientesAPI.buscar(filtros);
@@ -50,21 +51,6 @@ function Dashboard({ user, onLogout }) {
     } catch (err) {
       setError('Error en la búsqueda');
       console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const buscarPorId = async (id) => {
-    setLoading(true);
-    try {
-      const resultado = await expedientesAPI.getById(id);
-      setExpedientes([resultado]);
-      setBuscando(true);
-      setError('');
-    } catch (err) {
-      setError('No se encontró el expediente con ese ID');
-      setExpedientes([]);
     } finally {
       setLoading(false);
     }
@@ -169,12 +155,11 @@ function Dashboard({ user, onLogout }) {
             <ExpedienteSearch 
               onSearch={buscarExpedientes} 
               onClear={limpiarBusqueda}
-              onSearchById={buscarPorId}
             />
             
             {buscando && (
               <div className="search-info">
-                 Mostrando resultados de búsqueda - 
+                Mostrando resultados de búsqueda - 
                 <button onClick={limpiarBusqueda} className="clear-search-btn">
                   Mostrar todos
                 </button>
@@ -223,10 +208,10 @@ function Dashboard({ user, onLogout }) {
                       <tr key={exp.id}>
                         {editingId === exp.id ? (
                           <>
-                             <td>{exp.id}</td>
-                             <td><input name="numeroExpediente" value={editData.numeroExpediente} onChange={(e) => setEditData({...editData, numeroExpediente: e.target.value})} /></td>
-                             <td><input name="nombrePersona" value={editData.nombrePersona} onChange={(e) => setEditData({...editData, nombrePersona: e.target.value})} /></td>
-                             <td>
+                              <td>{exp.id}</td>
+                              <td><input name="numeroExpediente" value={editData.numeroExpediente} onChange={(e) => setEditData({...editData, numeroExpediente: e.target.value})} /></td>
+                              <td><input name="nombrePersona" value={editData.nombrePersona} onChange={(e) => setEditData({...editData, nombrePersona: e.target.value})} /></td>
+                              <td>
                                <select name="tipoCaso" value={editData.tipoCaso} onChange={(e) => setEditData({...editData, tipoCaso: e.target.value})}>
                                  <option>Civil</option>
                                  <option>Penal</option>
@@ -237,8 +222,8 @@ function Dashboard({ user, onLogout }) {
                                  <option>Adolescente</option>
                                  <option>Adulto Mayor</option>
                                </select>
-                             </td>
-                             <td>
+                              </td>
+                              <td>
                                <textarea 
                                  name="descripcion" 
                                  value={editData.descripcion || ''} 
@@ -246,39 +231,39 @@ function Dashboard({ user, onLogout }) {
                                  rows="2"
                                  style={{ width: '150px', padding: '5px', borderRadius: '5px', border: '1px solid #ddd' }}
                                />
-                             </td>
-                             <td>{new Date(exp.fechaRegistro).toLocaleDateString()}</td>
-                             <td>
+                              </td>
+                              <td>{new Date(exp.fechaRegistro).toLocaleDateString()}</td>
+                              <td>
                                <select name="estado" value={editData.estado} onChange={(e) => setEditData({...editData, estado: e.target.value})}>
                                  <option>Activo</option>
                                  <option>Cerrado</option>
                                </select>
-                             </td>
-                             <td>
+                              </td>
+                              <td>
                                <button onClick={() => actualizarExpediente(exp.id, editData)} className="save-btn"> Guardar</button>
-                               <button onClick={cancelEdit} className="cancel-btn"> Cancelar</button>
-                             </td>
+                               <button onClick={cancelEdit} className="cancel-btn">Cancelar</button>
+                              </td>
                           </>
                         ) : (
                           <>
-                             <td>{exp.id}</td>
-                             <td>{exp.numeroExpediente}</td>
-                             <td>{exp.nombrePersona}</td>
-                             <td>{exp.tipoCaso}</td>
+                              <td>{exp.id}</td>
+                              <td>{exp.numeroExpediente}</td>
+                              <td>{exp.nombrePersona}</td>
+                              <td>{exp.tipoCaso}</td>
                              <td style={{ maxWidth: '200px', wordWrap: 'break-word' }}>{exp.descripcion || '—'}</td>
-                             <td>{new Date(exp.fechaRegistro).toLocaleDateString()}</td>
-                             <td>
+                              <td>{new Date(exp.fechaRegistro).toLocaleDateString()}</td>
+                              <td>
                                <span className={`status-badge ${exp.estado === 'Activo' ? 'status-active' : 'status-closed'}`}>
                                  {exp.estado || 'Activo'}
                                </span>
-                             </td>
-                             <td>
+                              </td>
+                              <td>
                                <button onClick={() => startEdit(exp)} className="edit-btn"> Editar</button>
-                               <button onClick={() => eliminarExpediente(exp.id)} className="delete-btn"> Eliminar</button>
-                             </td>
+                               <button onClick={() => eliminarExpediente(exp.id)} className="delete-btn">Eliminar</button>
+                              </td>
                           </>
                         )}
-                      </tr>
+                       </tr>
                     ))
                   )}
                 </tbody>

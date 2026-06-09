@@ -30,7 +30,7 @@ const fetchWithAuth = async (url, options = {}) => {
   return response;
 };
 
-// ========== API DE AUTENTICACIÓN ==========
+// API DE AUTENTICACIÓN 
 export const authAPI = {
   login: async (username, password) => {
     const response = await fetch(`${API_URL}/Auth/login`, {
@@ -66,7 +66,7 @@ export const authAPI = {
   isAuthenticated: () => !!getToken()
 };
 
-// ========== API DE EXPEDIENTES ==========
+//  API DE EXPEDIENTES 
 export const expedientesAPI = {
   getAll: async () => {
     const response = await fetchWithAuth(`${API_URL}/ExpedientesDapper`);
@@ -118,7 +118,7 @@ export const expedientesAPI = {
   }
 };
 
-// ========== API DE ESTADÍSTICAS ==========
+//  API DE ESTADÍSTICAS 
 export const estadisticasAPI = {
   getResumen: async () => {
     const response = await fetchWithAuth(`${API_URL}/ExpedientesDapper/estadisticas/resumen`);
@@ -147,7 +147,6 @@ export const estadisticasAPI = {
     return await response.json();
   },
 
-  // 👇 MÉTODO FALTANTE - AGREGADO AHORA 👇
   getPorMesEspecifico: async (mes, año) => {
     const response = await fetchWithAuth(`${API_URL}/ExpedientesDapper/estadisticas/por-mes-especifico?mes=${mes}&año=${año}`);
     return await response.json();
